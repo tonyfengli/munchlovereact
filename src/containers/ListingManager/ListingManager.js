@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import Listings from "../../components/Listings/Listings"
 import Aux from "../../hoc/Aux";
-import DetailsPage from "../../components/UI/Modal/Modal"
+import Modal from "../../components/UI/Modal/Modal"
 
 class ListingManager extends Component {
 
@@ -28,7 +28,7 @@ class ListingManager extends Component {
                 phone: "714-455-6969"
             }
         ],
-        openListingDetail: true
+        openListingDetail: false
     }
 
     handleOpen = () => {
@@ -46,10 +46,13 @@ class ListingManager extends Component {
 
         return (
             <Aux>
-                <DetailsPage/>
+                <Modal
+                handleClose = {this.handleClose}
+                openListingDetail ={this.state.openListingDetail}/>
+                
                 <div> ListingSearch </div>
                 <Listings 
-                    openListingDetail = {this.purchaseCancelHandler}
+                    handleOpen = {this.handleOpen}
                     listings = {listings} />
             </Aux>
         );

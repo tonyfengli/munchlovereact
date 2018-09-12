@@ -42,7 +42,7 @@ function listing(props) {
       </CardContent>
       <CardActions>
         <Button 
-          onClick = {props.openListingDetail}
+          onClick = {props.handleOpen}
           size="small">Details</Button>
       </CardActions>
     </Card>

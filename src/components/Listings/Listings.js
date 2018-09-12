@@ -44,19 +44,19 @@ function listings(props) {
     <Grid container spacing={24}>
         <Grid item xs={4}>
           <Listing 
-            openListingDetail = {props.openListingDetail}
+            handleOpen = {props.handleOpen}
             listing = {props.listings[0]}
             className={classes.paper}>xs=3</Listing>
         </Grid>
         <Grid item xs={4}>
           <Listing 
-            openListingDetail = {props.openListingDetail}
+            handleOpen = {props.handleOpen}
             listing = {props.listings[1]}
             className={classes.paper}>xs=3</Listing>
         </Grid>
         <Grid item xs={4}>
           <Listing 
-            openListingDetail = {props.openListingDetail}
+            handleOpen = {props.handleOpen}
             listing = {props.listings[2]}
             className={classes.paper}>xs=3</Listing>
         </Grid>
