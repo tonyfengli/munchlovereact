@@ -1,20 +1,64 @@
 import React, {Component} from "react";
 import Aux from "../../hoc/Aux";
-import LoginInputs from "../../components/LoginInputs/LoginInputs"
+import SignUpInputs from "../../components/SignUpInputs/SignUpInputs";
+import axios from "axios"; 
 
 class Login extends Component {
 
     state = {
-        accounts: [
-            {
-                name:  "tonyli",
-                password: "password"
+        signupForm: {
+            username: {
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Your Username'
+                },
+                value: ''
             },
-            {
-                name:  "user1",
-                password: "password"
+            password: {
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Password'
+                },
+                value: ''
+            },
+            email: {
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Email'
+                },
+                value: ''
             }
-        ]
+        },
+        loading: false
+    }
+
+    signupClick = () => {
+        const formData = {};
+
+        for (let formElementIdentifier in this.state.signupForm) {
+            formData[formElementIdentifier] = this.state.signupForm[formElementIdentifier].value;
+        }
+
+
+        axios.post("/signup", formData)
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    };
+
+    inputChangedHandler = (event, inputIdentifier) => {
+        const updatedSignupForm = {
+            ...this.state.signupForm
+        };
+        const updatedFormElement = { 
+            ...updatedSignupForm[inputIdentifier]
+        };
+        updatedFormElement.value = event.target.value;
+        updatedSignupForm[inputIdentifier] = updatedFormElement;
+        this.setState({signupForm: updatedSignupForm});
     }
 
     handleOpen = () => {
@@ -28,11 +72,21 @@ class Login extends Component {
 
     render () {
 
-        //const listings = [...this.state.businesses];
+        const formElementsArray = [];
+        for (let key in this.state.signupForm) {
+            formElementsArray.push({
+                id: key,
+                config: this.state.signupForm[key]
+            });
+        }
+
 
         return (
             <Aux>
-                <LoginInputs/>
+                <SignUpInputs 
+                    changed = {this.inputChangedHandler}
+                    elements = {formElementsArray}
+                    signup = {this.signupClick}/>
             </Aux>
         );
     }

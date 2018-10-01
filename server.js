@@ -1,57 +1,44 @@
 const express = require('express');
-const yelp = require('yelp-fusion');
 
 const app = express();
 
+const passport = require('passport');
+const session = require('express-session');
+const bodyParser = require('body-parser');
 
-app.get("/", function(req, res) {
-  console.log("lol");
-});
+//For BodyParser
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-app.get("/searchresults/:location", function(req, res) {
-  console.log("lol");
-  var location = req.params.location;
+// For Passport
+ 
+app.use(session({ secret: 'keyboard cat',resave: true, saveUninitialized:true})); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
 
-  // Place holder for Yelp Fusion's API Key. Grab them
-  // from https://www.yelp.com/developers/v3/manage_app
-  const apiKey = '81fLxhTR0I7D6azLHNAUlu88BxvFgonIl8rD-oguXUftxtdkI5DjI0AB8SEQ1w2uG3N5WobKaHuyY-Hng_jhLPFHYeuptXgzycy2gEbJxg-V_TU8wJ4A35ASpsWVW3Yx';
+const env = require('dotenv').load();
 
-  const searchRequest = {
-    term:'coffee',
-    location: location
-  };
+//Models
+const db = require("./app/models");
 
-  const client = yelp.client(apiKey);
+// routes
+const authRoute = require("./app/routes/auth.js")(app, passport);
 
-  client.search(searchRequest).then(response => {
+//for userfavorites
+require("./app/routes/apiRoutes.js")(app, db.Userfavorite);
 
-    var businesses = [];
-
-    console.log(businesses)
-      
-    response.jsonBody.businesses.forEach(business => {
-      var dataObject = {
-        id: business.id,
-        name: business.name,
-        rating: business.rating,
-        phone: business.phone,
-        image: business.image_url,
-        price: business.price
-      }  
-        businesses.push(dataObject);
-    });
-
-    console.log(businesses);
-
-    //const prettyJson = JSON.stringify(firstResult, null, 4);
-    res.json(businesses);
-
-    
-
-  }).catch(e => {
-    console.log(e);
-  });
-
+//load passport strategies
+require("./config/passport.js")(passport, db.Userinfo);
+ 
+//Sync Database
+db.sequelize.sync().then(function() {
+ 
+    console.log('Nice! Database looks fine')
+ 
+}).catch(function(err) {
+ 
+    console.log(err, "Something went wrong with the Database Update!")
+ 
 });
 
 

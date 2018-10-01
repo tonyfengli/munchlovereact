@@ -3,6 +3,7 @@ import Layout from "./components/Layout/Layout";
 import {Route} from "react-router-dom";
 import HomePage from "./containers/HomePage/HomePage"
 import ListingManager from "./containers/ListingManager/ListingManager"
+import SignUp from "./containers/SignUp/SignUp"
 import Login from "./containers/Login/Login"
 
 class App extends Component {
@@ -12,7 +13,8 @@ class App extends Component {
         <Layout>
           <Route path ="/" exact component = {HomePage}/>
           <Route path ="/searchresults/:location" exact component = {ListingManager}/>
-          <Route path ="/login" exact component = {Login}/>
+          <Route path ="/signup" exact component = {SignUp}/>
+          <Route path ="/Login" exact component = {Login}/>
         </Layout>
       </div>
     );
