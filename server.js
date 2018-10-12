@@ -1,20 +1,33 @@
 const express = require('express');
 
-const app = express();
-
-const passport = require('passport');
-const session = require('express-session');
-const bodyParser = require('body-parser');
-
-//For BodyParser
+// Password auth stuffs
+var passport = require("passport");
+var session = require("express-session");
+var cookieParser = require("cookie-parser");
+var bodyParser = require("body-parser");
+var app = express();
+var PORT = process.env.PORT || 3000;
+// Middleware
+app.use(express.static("views/images"));
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// For Passport
- 
-app.use(session({ secret: 'keyboard cat',resave: true, saveUninitialized:true})); // session secret
+// passport password auth stuff
+app.use(
+  session({
+    secret: "goN6DJJC6E287cC77kkdYuNuAyWnz7Q3iZj8",
+    resave: false,
+    saveUninitialized: false
+  })
+);
 app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
+app.use(passport.session());
+
+app.use(function(req, res, next) {
+  res.locals.isAuthenticated = req.isAuthenticated();
+  next();
+});
 
 const env = require('dotenv').load();
 
@@ -23,6 +36,7 @@ const db = require("./app/models");
 
 // routes
 const authRoute = require("./app/routes/auth.js")(app, passport);
+require("./app/routes/apiRoutes.js")(app, db.Userfavorite);
 
 //for userfavorites
 require("./app/routes/apiRoutes.js")(app, db.Userfavorite);

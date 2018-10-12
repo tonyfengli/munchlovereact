@@ -4,20 +4,16 @@ const yelp = require('yelp-fusion');
 var apiKey = '81fLxhTR0I7D6azLHNAUlu88BxvFgonIl8rD-oguXUftxtdkI5DjI0AB8SEQ1w2uG3N5WobKaHuyY-Hng_jhLPFHYeuptXgzycy2gEbJxg-V_TU8wJ4A35ASpsWVW3Yx';
 
 exports.signup = function(req, res) {
-  console.log(req.body);
-  res.json(req.body);
-  //res.render("signup");
+  res.json(req.user);
 };
 exports.error = function(req, res) {
   res.json("lol");
 };
 exports.login = function(req, res) {
   console.log("lol");
-  //res.render("login");
 };
 
 exports.searchresults = function(req, res) {
-  console.log("lol1");
   const location = req.params.location;
 
   // Place holder for Yelp Fusion's API Key. Grab them
@@ -35,11 +31,10 @@ exports.searchresults = function(req, res) {
 
     var businesses = [];
 
-    //console.log(businesses)
       
     response.jsonBody.businesses.forEach(business => {
       var dataObject = {
-        id: business.id,
+        businessID: business.id,
         name: business.name,
         rating: business.rating,
         phone: business.phone,
@@ -49,9 +44,6 @@ exports.searchresults = function(req, res) {
         businesses.push(dataObject);
     });
 
-    //console.log(businesses);
-
-    //const prettyJson = JSON.stringify(firstResult, null, 4);
     res.json(businesses);
 
     
@@ -61,46 +53,29 @@ exports.searchresults = function(req, res) {
   });
 };
 
-
-exports.profile = function(req, res) {
-  // looks at Userfavorite table (in SQL) and queries the 'UserinfoId Column' 
-  // it checks for any rows that have User ID of the user currently logged in
-  // we have access to "req.user.id" because it is given to us from Passport.js
+exports.favorites = function(req, res) {
   db.Userfavorite.findAll({
     where: {
       UserinfoId: req.user.id
     }
   }).then(function(data) {
 
-    // we are setting var favorites like this... because this is the structure that handlebars requires 
-    var favorites = { 
-      businesses: []
-    }
-
-    // keeping in mind that "data" comes from SQL, we iterate over "data" (like a for loop) 
-    // and we push the data into the businesses:[] array (from favorites) 
+    const businesses = []
+ 
 
     data.forEach(business => {
-      favorites.businesses.push(business.dataValues);
+      businesses.push(business.dataValues);
     })
 
-    // with our "new and improved" "data" we give it to handlebars to be rendered
-    //res.render("profile", favorites);
+    res.json(businesses);
 
   });
 
-  
 };
-
 
 exports.aboutus = function(req, res) {
-  res.render("aboutus");
 };
 
-// sends userdata to main.handlebars, because we will need it to see who is logged
-exports.favorites = function(req, res) {
-  res.json(req.user);
-};
 
 exports.logout = function(req, res) {
   req.session.destroy(function(err) {
@@ -111,7 +86,6 @@ exports.logout = function(req, res) {
 exports.frontpage = function(req, res) {
   console.log("HELLLOOOOOO>>>>>>>>>", req.user);
   console.log(req.isAuthenticated());
-  res.render("frontpage");
 };
 
 exports.front = function(req, res) {

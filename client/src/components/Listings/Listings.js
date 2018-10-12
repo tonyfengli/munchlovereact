@@ -19,17 +19,18 @@ function listings(props) {
 
   const { classes } = props;
 
-  let businesses = (props.businesses.map(business => {
+  let businesses = (props.businesses.map((businesses, index) => {
     return (
       <Grid item xs={4}>
         <Listing 
+          clickTest = {() => props.clickTest(index)}
+          businessID = {businesses.businessID}
           handleOpen = {props.handleOpen}
-          name = {business.name}
-          phone = {business.phone}
-          image = {business.image}
-          rating = {business.rating}
-          price = {business.price}
-          key = {business.id}
+          name = {businesses.name}
+          phone = {businesses.phone}
+          image = {businesses.image}
+          rating = {businesses.rating}
+          price = {businesses.price}
           className={classes.paper}>xs=3</Listing>
       </Grid>
     ); 

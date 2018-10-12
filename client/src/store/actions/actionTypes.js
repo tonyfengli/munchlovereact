@@ -1,0 +1,10 @@
+export const GET_BUSINESSES = "GET_BUSINESSES";
+export const GET_FAVORITES = "GET_FAVORITES";
+export const FETCH_BUSINESSES_FAILED = "FETCH_BUSINESSES_FAILED";
+export const GET_INPUT = "GET_INPUT";
+export const ONCLICK_SEARCH = "ONCLICK_SEARCH";
+
+export const AUTH_START = "AUTH_START";
+export const AUTH_SUCCESS = "AUTH_SUCCESS";
+export const AUTH_FAIL = "AUTH_FAIL";
+export const AUTH_LOGOUT = "AUTH_LOGOUT";

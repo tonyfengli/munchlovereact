@@ -1,24 +1,43 @@
 import React, { Component } from 'react';
-import Layout from "./components/Layout/Layout";
-import {Route} from "react-router-dom";
+import Layout from "./hoc/Layout/Layout";
+import {Route, withRouter} from "react-router-dom";
+import { connect } from 'react-redux';
 import HomePage from "./containers/HomePage/HomePage"
-import ListingManager from "./containers/ListingManager/ListingManager"
-import SignUp from "./containers/SignUp/SignUp"
-import Login from "./containers/Login/Login"
+import SearchResults from "./containers/SearchResults/SearchResults"
+import Favorites from "./containers/Favorites/Favorites"
+import Auth from "./containers/Auth/Auth"
+import * as actions from './store/actions/index';
 
 class App extends Component {
+
+  componentDidMount () {
+    this.props.onTryAutoSignup();
+  }
+
   render() {
     return (
       <div>
         <Layout>
           <Route path ="/" exact component = {HomePage}/>
-          <Route path ="/searchresults/:location" exact component = {ListingManager}/>
-          <Route path ="/signup" exact component = {SignUp}/>
-          <Route path ="/Login" exact component = {Login}/>
+          <Route path ="/search/:location" exact component = {SearchResults}/>
+          <Route path ="/auth" exact component = {Auth}/>
+          <Route path ="/favorites" exact component = {Favorites}/>
         </Layout>
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    isAuthenticated: state.auth.password !== null
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onTryAutoSignup: () => dispatch( actions.authCheckState() )
+  };
+};
+
+export default withRouter( connect( mapStateToProps, mapDispatchToProps )( App ) );

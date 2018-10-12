@@ -84,7 +84,7 @@ class RecipeReviewCard extends React.Component {
         </CardContent>
         <CardActions className={classes.actions} disableActionSpacing>
           <IconButton aria-label="Add to favorites">
-            <FavoriteIcon />
+            <FavoriteIcon onClick = {this.props.clickTest}/>
           </IconButton>
           <IconButton
             className={classnames(classes.expand, {

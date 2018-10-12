@@ -1,3 +1,4 @@
+require("dotenv").config();
 const bCrypt = require("bcrypt");
 module.exports = function(passport, userinfo) {
 const Userinfo = userinfo;
@@ -22,6 +23,7 @@ const LocalStrategy = require("passport-local").Strategy;
           }
         }).then(function(user) {
           if (user) {
+            console.log("didn't work")
             return done(null, false, {
               message: "That username is already taken"
             });
@@ -37,7 +39,6 @@ const LocalStrategy = require("passport-local").Strategy;
                 return done(null, false);
               } else {
                 user.get();
-                console.log("HELLOOO FROM PASSPORT.JSSSSS >>>>>>>>>>", user);
                 return done(null, user);
               }
             });
@@ -48,6 +49,7 @@ const LocalStrategy = require("passport-local").Strategy;
   );
 
   passport.serializeUser(function(user, done) {
+    console.log("serialize" + user.id)
     done(null, user.id);
   });
 
@@ -57,6 +59,7 @@ const LocalStrategy = require("passport-local").Strategy;
         id: id
       }
     }).then(function(user) {
+      console.log("deserialize" + user.id)
       if (user) {
         done(null, user.get());
       } else {

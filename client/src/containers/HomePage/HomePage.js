@@ -4,71 +4,35 @@ import SearchBar from "../../components/SearchBar/SearchBar"
 
 class HomePage extends Component {
 
-    constructor() {
-        super();
-        this.state = {
-            users: [
-                {
-                    name: "tony"
-                },
-                {
-                    name: "tony1"
-                }
-            ],
-            selectedUser: ""
-        }
-    }
-
 
     handleChange = (e) => {
         this.setState({ input: e.target.value });
     }
 
-    handleClick = () => {
+    onClickSearch = () => {
         let location = this.state.input
         console.log(location);
-        this.props.history.replace('/searchresults/' + location);
+        console.log(this.props.history);
+        this.props.history.replace('/search/' + location);
         
-    }
-
-
-    userSelect = (user) => {
-        this.setState({ selectedUser: user  }, () => this.handleRoute(user));
-    }
-
-    handleRoute = (user) => {
-
-        const location = this.state.input
-        const queryParams = [];
-        queryParams.push(encodeURIComponent("user") + "=" + user);
-
-        const queryString = queryParams.join("");
-
-        this.props.history.push({
-            pathname: "./searchresults/" + location,
-            search: "?" + queryString
-        })
     }
 
 
     render () {
 
-        let users = [...this.state.users]
-        let usersDiv = users.map(user => {
-            return <p name = {user.name} onClick= {() => this.userSelect(user.name)}> {user.name} </p>
-        })
 
       return (
           <Aux>
               <SearchBar 
               label = "search"
               handleChange = {this.handleChange}
-              handleClick = {this.handleClick}/>
-              {usersDiv}
+              onClickSearch = {this.onClickSearch}/>
           </Aux>
       );
     }
 
 }
+
+
 
 export default HomePage;

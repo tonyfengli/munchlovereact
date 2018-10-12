@@ -43,7 +43,6 @@ function loginInputs(props) {
 
   const { classes } = props;
   const formElementsArray = props.elements;
-  console.log(formElementsArray);
 
   let form = (
         formElementsArray.map(formElement => (
@@ -70,7 +69,7 @@ function loginInputs(props) {
                 className={classes.paper}></LoginInput> */}
                 {form}
               <Button variant="contained" onClick = {props.signup} className={classes.button}>
-              Register
+              {props.pageButtonText}
               </Button>
             </Grid>
           </Paper>

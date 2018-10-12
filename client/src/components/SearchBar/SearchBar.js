@@ -88,7 +88,7 @@ function CustomizedInputs(props) {
         <Button 
         variant="contained" 
         className={classes.button}
-        onClick = {props.handleClick}>
+        onClick = {props.onClickSearch}>
             Search
         </Button>
     </div>
